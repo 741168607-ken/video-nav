@@ -78,6 +78,8 @@ body{
 .nav-item .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .nav-item .count{background:rgba(255,255,255,.30);border-radius:20px;font-size:11.5px;padding:2px 10px;flex-shrink:0}
 .sidebar-foot{padding:14px 8px 4px;border-top:2px dashed #e3eef7;font-size:12px;color:var(--muted);line-height:1.9}
+.reset-link{cursor:pointer;color:#ff8a65;text-decoration:underline;display:inline-block;margin-top:4px}
+.reset-link:hover{color:#ff6b6b}
 
 /* 主区 */
 .main{flex:1;min-width:0;padding:6px 8px 30px}
@@ -212,7 +214,8 @@ body{
     <div class="sidebar-foot">
       🎬 点卡片 → 百度网盘页面播放<br>
       👆 播放次数记在本设备<br>
-      🔁 勾选视频可循环连播
+      🔁 勾选视频可循环连播<br>
+      <span class="reset-link" id="reset-counts" title="清零本设备的播放次数">🧹 清零播放次数</span>
     </div>
   </aside>
 
@@ -598,6 +601,13 @@ body{
   $("hint-close").addEventListener("click", function(){
     $("hint-banner").style.display = "none";
     try{ localStorage.setItem("nav.hintDismissed", "1"); }catch(e){}
+  });
+  $("reset-counts").addEventListener("click", function(){
+    if(!window.confirm("确定要清零本设备上所有视频的播放次数吗？")) return;
+    try{ localStorage.removeItem("nav.counts"); }catch(e){}
+    counts = {};
+    renderCards();
+    toast("播放次数已清零");
   });
   try{
     if(localStorage.getItem("nav.hintDismissed") === "1") $("hint-banner").style.display = "none";
