@@ -98,6 +98,7 @@ body{
 }
 .poster img.pic{width:64%;height:64%;object-fit:contain;border-radius:16px;
   box-shadow:0 6px 16px rgba(0,0,0,.10);transition:transform .2s}
+.poster img.thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .card:hover .poster img.pic{transform:scale(1.07) rotate(-1deg)}
 .play-badge{
   position:absolute;right:12px;bottom:12px;width:44px;height:44px;border-radius:50%;
@@ -337,8 +338,13 @@ body{
       poster.className = "poster";
       poster.style.background = POSTER_BG[it.cat % POSTER_BG.length];
       var pic = document.createElement("img");
-      pic.className = "pic";
-      pic.src = "icons/" + it.cat + ".png";
+      if(v.thumb){
+        pic.className = "thumb";
+        pic.src = v.thumb;
+      }else{
+        pic.className = "pic";
+        pic.src = "icons/" + it.cat + ".png";
+      }
       pic.alt = "";
       pic.onerror = function(){ this.style.display = "none"; };
       var badge = document.createElement("div");
